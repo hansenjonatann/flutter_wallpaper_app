@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter_wallpaper_manager/flutter_wallpaper_manager.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter/material.dart';
 
 class WallpaperController {
   Future setWallpaper(String imageUrl) async {
@@ -21,7 +22,8 @@ class WallpaperController {
         imageFile.path,
         wallpaperLocation,
       );
-      print('Wallpaper berhasil diatur');
+
+      print('sukses');
     } catch (e) {
       print(e.toString());
     }

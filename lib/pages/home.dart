@@ -13,15 +13,6 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: ConstColor.appWhite,
         centerTitle: true,
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: Icon(
-              Icons.search,
-              color: ConstColor.appBlack,
-            ),
-          )
-        ],
         title: Text(
           'Walpaper',
           style: TextStyle(color: ConstColor.appBlack),

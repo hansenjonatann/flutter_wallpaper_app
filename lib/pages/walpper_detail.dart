@@ -36,6 +36,23 @@ class WalpaperDetail extends StatelessWidget {
             child: InkWell(
               onTap: () {
                 _wallpaperController.setWallpaper(imageUrl);
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: Text('Success'),
+                      content: Text('Wallpaper has been set successfully.'),
+                      actions: <Widget>[
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: Text('OK'),
+                        ),
+                      ],
+                    );
+                  },
+                );
               },
               child: Container(
                 height: 80,
