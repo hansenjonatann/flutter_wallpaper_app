@@ -32,8 +32,8 @@ class MyDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: Icon(Icons.category),
-            title: Text('Category'),
+            leading: Icon(Icons.collections),
+            title: Text('Collections'),
             onTap: () {
               Navigator.of(context).pushReplacement(
                   MaterialPageRoute(builder: (context) => CategoryPage()));

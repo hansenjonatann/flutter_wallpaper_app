@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_walpaper/constants/color.dart';
+import 'package:flutter_walpaper/controller/wallpaper_controller.dart';
 import 'package:flutter_walpaper/pages/category.dart';
 import 'package:flutter_walpaper/pages/walpper_detail.dart';
 import 'package:flutter_walpaper/widgets/drawer.dart';
+import 'package:get/get.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+  HomePage({super.key});
+  final WallpaperController _wallpaperController =
+      Get.put(WallpaperController());
 
   @override
   Widget build(BuildContext context) {
@@ -34,42 +38,49 @@ class HomePage extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: Column(
               children: [
-                GridView.builder(
-                  padding: EdgeInsets.zero,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    childAspectRatio: 3 / 4,
-                    crossAxisCount: 2,
-                    mainAxisSpacing: 10,
-                    crossAxisSpacing: 10,
-                  ),
-                  itemCount: 12,
-                  shrinkWrap: true,
-                  physics: ScrollPhysics(),
-                  itemBuilder: (BuildContext context, int index) {
-                    return GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => WalpaperDetail(
-                                imageUrl:
-                                    'https://picsum.photos/id/${index + 20}/200/300')));
-                      },
-                      child: Container(
-                        height: 160.0,
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: NetworkImage(
-                              "https://picsum.photos/id/${index + 20}/200/300",
+                Obx(
+                  () {
+                    return _wallpaperController.isLoading.value
+                        ? Center(child: CircularProgressIndicator())
+                        : GridView.builder(
+                            padding: EdgeInsets.zero,
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                              childAspectRatio: 3 / 4,
+                              crossAxisCount: 2,
+                              mainAxisSpacing: 10,
+                              crossAxisSpacing: 10,
                             ),
-                            fit: BoxFit.cover,
-                          ),
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(
-                              8.0,
-                            ),
-                          ),
-                        ),
-                      ),
-                    );
+                            itemCount:
+                                _wallpaperController.wallpapers.value.length,
+                            shrinkWrap: true,
+                            physics: ScrollPhysics(),
+                            itemBuilder: (context, index) {
+                              return InkWell(
+                                onTap: () {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) => WalpaperDetail(
+                                          imageUrl:
+                                              '${_wallpaperController.wallpapers.value[index].src!.large2X}')));
+                                },
+                                child: Container(
+                                  height: 160.0,
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                      image: NetworkImage(
+                                          '${_wallpaperController.wallpapers.value[index].src!.tiny}'),
+                                      fit: BoxFit.cover,
+                                    ),
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(
+                                        8.0,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          );
                   },
                 ),
               ],
@@ -78,7 +89,7 @@ class HomePage extends StatelessWidget {
         ),
       ),
       drawer: MyDrawer(),
-      bottomNavigationBar: BottomNavigationBar(items: [
+      bottomNavigationBar: BottomNavigationBar(currentIndex: 0, items: [
         BottomNavigationBarItem(
             icon: IconButton(
                 onPressed: () {
@@ -92,11 +103,8 @@ class HomePage extends StatelessWidget {
                   Navigator.of(context).pushReplacement(
                       MaterialPageRoute(builder: (context) => CategoryPage()));
                 },
-                icon: Icon(Icons.category)),
-            label: 'Category'),
-        BottomNavigationBarItem(
-            icon: IconButton(onPressed: () {}, icon: Icon(Icons.person)),
-            label: 'Account'),
+                icon: Icon(Icons.collections)),
+            label: 'Collections'),
       ]),
     );
   }
